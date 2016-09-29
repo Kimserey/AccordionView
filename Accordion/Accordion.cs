@@ -19,14 +19,27 @@ namespace Accordion
 
 		public ExpendableView(Action<ContentView> onSelected)
 		{
-			var header =
-				new Label { 
-					Text = "Test title clickable",
+			var header = new AbsoluteLayout {
+					BackgroundColor = Color.FromHex("0067B7")
+			};
+			var icon =
+				new Image
+				{
+					Source = ImageSource.FromFile("ic_keyboard_arrow_right_white_24dp.png"),
+					VerticalOptions = LayoutOptions.Center
+				};
+			header.Children.Add(icon, new Rectangle(0, 1, .1, 1), AbsoluteLayoutFlags.All);
+			header.Children.Add(
+				new Label
+				{
+					Text = "October",
 					TextColor = Color.White,
 					BackgroundColor = Color.FromHex("0067B7"),
 					VerticalTextAlignment = TextAlignment.Center,
 					HeightRequest = 50
-				};
+				},
+				new Rectangle(1, 1, .9, 1),
+				AbsoluteLayoutFlags.All);
 
 			var list =
 				new StackLayout
@@ -64,11 +77,13 @@ namespace Accordion
 						if (_isExpended)
 						{
 							list.HeightRequest = 0;
+							icon.Source = ImageSource.FromFile("ic_keyboard_arrow_right_white_24dp.png");
 							_isExpended = false;
 						}
 						else 
 						{
 							list.HeightRequest = list.Children.Count * 30;
+							icon.Source = ImageSource.FromFile("ic_keyboard_arrow_down_white_24dp.png");
 							onSelected(this);
 							_isExpended = true;
 						}
@@ -89,7 +104,7 @@ namespace Accordion
 			var layout =
 				new StackLayout
 				{
-					Spacing = 0,
+					Spacing = 1,
 					Children = {
 						new ExpendableView(scrollView),
 						new ExpendableView(scrollView),
