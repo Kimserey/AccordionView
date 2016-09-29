@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,184 +8,125 @@ using Xamarin.Forms;
 
 namespace Accordion
 {
-	public interface ISelectable
+	public class ExpendableView : ContentView
 	{
-		bool IsSelected { get; set; }
-	}
+		private bool _isExpended;
 
-	public class ItemsView : ScrollView
-	{
-		public static readonly BindableProperty ItemsSourceProperty =
-			BindableProperty.Create(
-				propertyName: "ItemsSource",
-				returnType: typeof(IList),
-				declaringType: typeof(ItemsView),
-				defaultBindingMode: BindingMode.TwoWay,
-				defaultValue: default(IList),
-				propertyChanged: ItemsView.OnItemsSourceChanged);
+		public ExpendableView(ScrollView parent)
+			: this(async (view) => { await parent.ScrollToAsync(0, view.Y, true); }) 
+		{ }
 
-		public IList ItemsSource
+
+		public ExpendableView(Action<ContentView> onSelected)
 		{
-			get { return (IList)GetValue(ItemsSourceProperty); }
-			set { SetValue(ItemsSourceProperty, value); }
-		}
-
-		public static readonly BindableProperty SelectedItemProperty =
-			BindableProperty.Create(
-				propertyName: "SelectedItem",
-				returnType: typeof(object),
-				declaringType: typeof(ItemsView),
-				defaultBindingMode: BindingMode.TwoWay,
-				defaultValue: default(object),
-				propertyChanged: ItemsView.OnSelectedItemChanged);
-
-		public object SelectedItem
-		{
-			get { return (object)GetValue(SelectedItemProperty); }
-			set { SetValue(SelectedItemProperty, value); }
-		}
-
-		public static readonly BindableProperty ItemTemplateProperty =
-			BindableProperty.Create(
-				propertyName: "ItemTemplate",
-				returnType: typeof(DataTemplate),
-				declaringType: typeof(ItemsView),
-				defaultValue: default(DataTemplate),
-				defaultBindingMode: BindingMode.TwoWay);
-
-		public DataTemplate ItemTemplate
-		{
-			get { return (DataTemplate)GetValue(ItemTemplateProperty); }
-			set { SetValue(ItemTemplateProperty, value); }
-		}
-
-		readonly ICommand selectedCommand;
-		readonly StackLayout stackLayout;
-
-		public ItemsView(DataTemplate template): base()
-		{
-			selectedCommand = new Command<object>(item => this.SelectedItem = item);
-			stackLayout =
-				new StackLayout()
-				{
-					Orientation = StackOrientation.Horizontal,
-					Padding = 0,
-					Spacing = 0,
-					HorizontalOptions = LayoutOptions.FillAndExpand
-
+			var header =
+				new Label { 
+					Text = "Test title clickable",
+					TextColor = Color.White,
+					BackgroundColor = Color.FromHex("0067B7"),
+					VerticalTextAlignment = TextAlignment.Center,
+					HeightRequest = 50
 				};
-			this.ItemTemplate = template;
-			this.Content = stackLayout;
-		}
 
-		void Init()
-		{
-			stackLayout.Children.Clear();
-
-			if (ItemsSource == null)
-				return;
-
-			foreach (var item in ItemsSource)
-			{
-				var content = ItemTemplate.CreateContent();
-				var itemView = content as View;
-				itemView.BindingContext = item;
-
-				itemView.GestureRecognizers.Add(new TapGestureRecognizer
+			var list =
+				new StackLayout
 				{
-					Command = selectedCommand,
-					CommandParameter = itemView as object
-				});
+					Children = {
+						new Label { Text = "Hello", HeightRequest = 30 },
+						new Label { Text = "Hello", HeightRequest = 30 },
+						new Label { Text = "Hello", HeightRequest = 30 },
+						new Label { Text = "Hello", HeightRequest = 30 },
+						new Label { Text = "Hello", HeightRequest = 30 },
+						new Label { Text = "Hello", HeightRequest = 30 },
+						new Label { Text = "Hello", HeightRequest = 30 },
+						new Label { Text = "Hello", HeightRequest = 30 },
+						new Label { Text = "Hello", HeightRequest = 30 }
+					},
+					HeightRequest = 0,
+					
+				};
 
-				stackLayout.Children.Add(itemView);
-			}
-		}
+			var layout =
+				new StackLayout
+				{
+					Spacing = 0,
+					Children = { 
+						header,
+						list
+					}
+				};
 
-		static void OnItemsSourceChanged(BindableObject bindable, object oldValue, object newValue)
-		{
-			((ItemsView)bindable).Init();
-		}
+			header.GestureRecognizers.Add(
+				new TapGestureRecognizer
+				{
+					Command = new Command(() =>
+					{
+						if (_isExpended)
+						{
+							list.HeightRequest = 0;
+							_isExpended = false;
+						}
+						else 
+						{
+							list.HeightRequest = list.Children.Count * 30;
+							onSelected(this);
+							_isExpended = true;
+						}
+					})
+				}
+			);
 
-		static void OnSelectedItemChanged(BindableObject bindable, object oldValue, object newValue)
-		{
-			var itemsView = (ItemsView)bindable;
-
-			if (newValue == oldValue)
-				return;
-
-			var items = itemsView.ItemsSource.OfType<ISelectable>();
-
-			foreach (var item in items)
-				item.IsSelected = item == newValue;
+			this.Content = layout;
 		}
 	}
 
-	public class ItemsViewModel
+	public class AccordionViewPage : ContentPage
 	{
-		public IEnumerable<Item> Items
+		public AccordionViewPage()
 		{
-			get;
-			set;
-		}
+			var scrollView = new ScrollView();
 
-		public ItemsViewModel ()
-		{
-			this.Items = new List<Item> {
-				new Item { Title = "Something" },
-				new Item { Title = "Test" },
-				new Item { Title = "Hello" }
-			};
-		}
-	}
+			var layout =
+				new StackLayout
+				{
+					Spacing = 0,
+					Children = {
+						new ExpendableView(scrollView),
+						new ExpendableView(scrollView),
+						new ExpendableView(scrollView),
+						new ExpendableView(scrollView),
+						new ExpendableView(scrollView),
+						new ExpendableView(scrollView),
+						new ExpendableView(scrollView),
+						new ExpendableView(scrollView),
+						new ExpendableView(scrollView),
+						new ExpendableView(scrollView),
+						new ExpendableView(scrollView),
+						new ExpendableView(scrollView),
+						new ExpendableView(scrollView)
+					}
+				};
 
-	public class Item: ISelectable
-	{
-		public bool IsSelected
-		{
-			get; set;
-		}
+			scrollView.Content = layout;
 
-		public string Title { get; set; }
+			this.Title = "Accordion";
+			this.Content = scrollView;
+		}
 	}
 
 	public class App : Application
 	{
 		public App()
 		{
-			var template =
-				new DataTemplate(() =>
+			var page = 
+				new TabbedPage
 				{
-					var label = new Label();
-					var layout = 
-						new StackLayout
-						{
-							Children = 
-							{
-								label		
-							}
-						};
-					label.SetBinding(Label.TextProperty, "Title");
-				return (object)layout;
-				});
-
-			var list = new ItemsView(template);
-			var vm = new ItemsViewModel();
-			list.SetBinding(ItemsView.ItemsSourceProperty, "Items");
-			list.BindingContext = vm;
-
-			var content = new ContentPage
-			{
-				Title = "Accordion",
-				Content = new StackLayout
-				{
-					VerticalOptions = LayoutOptions.Center,
-					Children = {
-						list
+					Children = { 
+						new AccordionViewPage(),
+						new CustomViewTestPage()
 					}
-				}
-			};
-
-			MainPage = new NavigationPage(content);
+				};
+			MainPage = page;
 		}
 	}
 }
