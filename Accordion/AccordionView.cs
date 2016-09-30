@@ -72,7 +72,7 @@ namespace Accordion
 
 	public class AccordionSectionView : StackLayout
 	{
-		private bool _isExpended = false;
+		private bool _isExpanded = false;
 		private StackLayout _content = new StackLayout { HeightRequest = 0 };
 		private Color _headerColor = Color.FromHex("0067B7");
 		private ImageSource _arrowRight = ImageSource.FromFile("ic_keyboard_arrow_right_white_24dp.png");
@@ -128,19 +128,19 @@ namespace Accordion
 				{
 					Command = new Command(async () =>
 					{
-						if (_isExpended)
+						if (_isExpanded)
 						{
 							_headerIcon.Source = _arrowRight;
 							_content.HeightRequest = 0;
 							_content.IsVisible = false;
-							_isExpended = false;
+							_isExpanded = false;
 						}
 						else
 						{
 							_headerIcon.Source = _arrowDown;
 							_content.HeightRequest = _content.Children.Count * 50;
 							_content.IsVisible = true;
-							_isExpended = true;
+							_isExpanded = true;
 
 							// Scroll top by the current Y position of the section
 							if (parent.Parent is VisualElement)
