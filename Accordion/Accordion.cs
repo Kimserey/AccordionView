@@ -8,124 +8,60 @@ using Xamarin.Forms;
 
 namespace Accordion
 {
-	public class ExpendableView : ContentView
+	public class ShoppingCart
 	{
-		private bool _isExpended;
+		public DateTime Date { get; set; }
+		public double Amount { get; set; }
+	}
 
-		public ExpendableView(ScrollView parent)
-			: this(async (view) => { await parent.ScrollToAsync(0, view.Y, true); }) 
-		{ }
+	public class Section
+	{ 
+		public string Title { get; set; }
+		public IEnumerable<ShoppingCart> List { get; set; }
+	}
 
-
-		public ExpendableView(Action<ContentView> onSelected)
-		{
-			var header = new AbsoluteLayout {
-					BackgroundColor = Color.FromHex("0067B7")
-			};
-			var icon =
-				new Image
-				{
-					Source = ImageSource.FromFile("ic_keyboard_arrow_right_white_24dp.png"),
-					VerticalOptions = LayoutOptions.Center
-				};
-			header.Children.Add(icon, new Rectangle(0, 1, .1, 1), AbsoluteLayoutFlags.All);
-			header.Children.Add(
-				new Label
-				{
-					Text = "October",
-					TextColor = Color.White,
-					BackgroundColor = Color.FromHex("0067B7"),
-					VerticalTextAlignment = TextAlignment.Center,
-					HeightRequest = 50
-				},
-				new Rectangle(1, 1, .9, 1),
-				AbsoluteLayoutFlags.All);
-
-			var list =
-				new StackLayout
-				{
-					Children = {
-						new Label { Text = "Hello", HeightRequest = 30 },
-						new Label { Text = "Hello", HeightRequest = 30 },
-						new Label { Text = "Hello", HeightRequest = 30 },
-						new Label { Text = "Hello", HeightRequest = 30 },
-						new Label { Text = "Hello", HeightRequest = 30 },
-						new Label { Text = "Hello", HeightRequest = 30 },
-						new Label { Text = "Hello", HeightRequest = 30 },
-						new Label { Text = "Hello", HeightRequest = 30 },
-						new Label { Text = "Hello", HeightRequest = 30 }
-					},
-					HeightRequest = 0,
-					
-				};
-
-			var layout =
-				new StackLayout
-				{
-					Spacing = 0,
-					Children = { 
-						header,
-						list
-					}
-				};
-
-			header.GestureRecognizers.Add(
-				new TapGestureRecognizer
-				{
-					Command = new Command(() =>
-					{
-						if (_isExpended)
-						{
-							list.HeightRequest = 0;
-							icon.Source = ImageSource.FromFile("ic_keyboard_arrow_right_white_24dp.png");
-							_isExpended = false;
-						}
-						else 
-						{
-							list.HeightRequest = list.Children.Count * 30;
-							icon.Source = ImageSource.FromFile("ic_keyboard_arrow_down_white_24dp.png");
-							onSelected(this);
-							_isExpended = true;
-						}
-					})
-				}
-			);
-
-			this.Content = layout;
-		}
+	public class ViewModel
+	{
+		public IEnumerable<Section> List { get; set; }
 	}
 
 	public class AccordionViewPage : ContentPage
 	{
 		public AccordionViewPage()
 		{
-			var scrollView = new ScrollView();
+			this.Title = "Accordion";
 
-			var layout =
-				new StackLayout
-				{
-					Spacing = 1,
-					Children = {
-						new ExpendableView(scrollView),
-						new ExpendableView(scrollView),
-						new ExpendableView(scrollView),
-						new ExpendableView(scrollView),
-						new ExpendableView(scrollView),
-						new ExpendableView(scrollView),
-						new ExpendableView(scrollView),
-						new ExpendableView(scrollView),
-						new ExpendableView(scrollView),
-						new ExpendableView(scrollView),
-						new ExpendableView(scrollView),
-						new ExpendableView(scrollView),
-						new ExpendableView(scrollView)
+			var template = new DataTemplate(() =>
+			{
+				var layout = new AbsoluteLayout { Padding = 5 };
+				var title = new Label { HorizontalTextAlignment = TextAlignment.Start };
+				var price = new Label { HorizontalTextAlignment = TextAlignment.End };
+				layout.Children.Add(title, new Rectangle(0, 1, 0.5, 1), AbsoluteLayoutFlags.All);
+				layout.Children.Add(price, new Rectangle(0, 1, 0.5, 1), AbsoluteLayoutFlags.All);
+				title.SetBinding(Label.TextProperty, "Date", stringFormat: "{0:dd MMM yyyy}");
+				price.SetBinding(Label.TextProperty, "Amount", stringFormat: "{0:C2}");
+				return (object)layout;
+			});
+
+			var view = new AccordionView(template);
+			view.SetBinding(AccordionView.ItemsSourceProperty, "List");
+			view.Template.SetBinding(AccordionSectionView.TitleProperty, "Title");
+			view.Template.SetBinding(AccordionSectionView.ItemsSourceProperty, "List");
+
+			view.BindingContext =
+				new ViewModel
+				{ 
+					List = new List<Section> {
+						new Section
+						{
+							Title = "October",
+							List = new List<ShoppingCart> {
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 }
+							}
+						}
 					}
 				};
-
-			scrollView.Content = layout;
-
-			this.Title = "Accordion";
-			this.Content = scrollView;
+			this.Content = view;
 		}
 	}
 
@@ -133,10 +69,10 @@ namespace Accordion
 	{
 		public App()
 		{
-			var page = 
+			var page =
 				new TabbedPage
 				{
-					Children = { 
+					Children = {
 						new AccordionViewPage(),
 						new CustomViewTestPage()
 					}
