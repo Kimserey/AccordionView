@@ -70,7 +70,7 @@ namespace Accordion
 		}
 	}
 
-	public class AccordionSectionView : ContentView
+	public class AccordionSectionView : StackLayout
 	{
 		private bool _isExpended = false;
 		private StackLayout _content = new StackLayout { HeightRequest = 0 };
@@ -119,15 +119,9 @@ namespace Accordion
 			_header.Children.Add(_headerIcon, new Rectangle(0, 1, .1, 1), AbsoluteLayoutFlags.All);
 			_header.Children.Add(_headerTitle, new Rectangle(1, 1, .9, 1), AbsoluteLayoutFlags.All);
 
-			var layout =
-				new StackLayout
-				{
-					Spacing = 0,
-					Children = {
-						_header,
-						_content
-					}
-				};
+			this.Spacing = 0;
+			this.Children.Add(_header);
+			this.Children.Add(_content);
 
 			_header.GestureRecognizers.Add(
 				new TapGestureRecognizer
@@ -157,8 +151,6 @@ namespace Accordion
 					})
 				}
 			);
-
-			this.Content = layout;
 		}
 
 		void ChangeTitle()
