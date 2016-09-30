@@ -58,6 +58,20 @@ namespace Accordion
 							List = new List<ShoppingCart> {
 								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 }
 							}
+						},
+						new Section
+						{
+							Title = "September",
+							List = new List<ShoppingCart> {
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 }
+							}
+						},
+						new Section
+						{
+							Title = "August",
+							List = new List<ShoppingCart> {
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 }
+							}
 						}
 					}
 				};

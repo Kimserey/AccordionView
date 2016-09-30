@@ -33,6 +33,7 @@ namespace Accordion
 		{
 			this.SubTemplate = itemTemplate;
 			this.Template = new DataTemplate(() => (object)(new AccordionSectionView(itemTemplate, this)));
+			this.Content = _layout;
 		}
 
 		void PopulateList()
@@ -60,7 +61,7 @@ namespace Accordion
 		private Color _headerColor = Color.FromHex("0067B7");
 		private ImageSource _arrowRight = ImageSource.FromFile("ic_keyboard_arrow_right_white_24dp.png");
 		private ImageSource _arrowDown = ImageSource.FromFile("ic_keyboard_arrow_down_white_24dp.png");
-		private StackLayout _list = new StackLayout();
+		private StackLayout _list = new StackLayout { HeightRequest = 0 };
 		private AbsoluteLayout _header = new AbsoluteLayout();
 		private Image _headerIcon = new Image { VerticalOptions = LayoutOptions.Center };
 		private Label _headerTitle = new Label { TextColor = Color.White, VerticalTextAlignment = TextAlignment.Center, HeightRequest = 50 };
