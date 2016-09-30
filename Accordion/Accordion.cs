@@ -33,7 +33,7 @@ namespace Accordion
 
 			var template = new DataTemplate(() =>
 			{
-				var layout = new AbsoluteLayout { Padding = 5 };
+				var layout = new AbsoluteLayout { Padding = 5, HeightRequest = 50 };
 				var title = new Label { HorizontalTextAlignment = TextAlignment.Start };
 				var price = new Label { HorizontalTextAlignment = TextAlignment.End };
 				layout.Children.Add(title, new Rectangle(0, 1, 0.5, 1), AbsoluteLayoutFlags.All);

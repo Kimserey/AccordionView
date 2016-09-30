@@ -10,7 +10,7 @@ namespace Accordion
 {
 	public class AccordionView : ScrollView
 	{
-		private StackLayout _layout = new StackLayout();
+		private StackLayout _layout = new StackLayout { Spacing = 1 };
 
 		public DataTemplate Template { get; set; }
 		public DataTemplate SubTemplate { get; set; }
@@ -40,9 +40,9 @@ namespace Accordion
 		{
 			_layout.Children.Clear();
 
-			var template = (View)this.Template.CreateContent();
 			foreach (object item in this.ItemsSource)
 			{
+				var template = (View)this.Template.CreateContent();
 				template.BindingContext = item;
 				_layout.Children.Add(template);
 			}
@@ -148,9 +148,9 @@ namespace Accordion
 		{
 			_list.Children.Clear();
 
-			var template = (View)_template.CreateContent();
 			foreach (object item in this.ItemsSource)
 			{
+				var template = (View)_template.CreateContent();
 				template.BindingContext = item;
 				_list.Children.Add(template);
 			}
