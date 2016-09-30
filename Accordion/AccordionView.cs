@@ -8,18 +8,18 @@ using Xamarin.Forms;
 
 namespace Accordion
 {
-	public class DefaultAccordionTemplate : ContentView
+	public class DefaultTemplate : AbsoluteLayout
 	{
-		public DefaultAccordionTemplate()
+		public DefaultTemplate()
 		{
-			var layout = new AbsoluteLayout { Padding = 5, HeightRequest = 50 };
+			this.Padding = 5;
+			this.HeightRequest = 50;
 			var title = new Label { HorizontalTextAlignment = TextAlignment.Start, HorizontalOptions = LayoutOptions.StartAndExpand };
 			var price = new Label { HorizontalTextAlignment = TextAlignment.End, HorizontalOptions = LayoutOptions.End };
-			layout.Children.Add(title, new Rectangle(0, 0.5, 0.5, 1), AbsoluteLayoutFlags.All);
-			layout.Children.Add(price, new Rectangle(1, 0.5, 0.5, 1), AbsoluteLayoutFlags.All);
+			this.Children.Add(title, new Rectangle(0, 0.5, 0.5, 1), AbsoluteLayoutFlags.All);
+			this.Children.Add(price, new Rectangle(1, 0.5, 0.5, 1), AbsoluteLayoutFlags.All);
 			title.SetBinding(Label.TextProperty, "Date", stringFormat: "{0:dd MMM yyyy}");
 			price.SetBinding(Label.TextProperty, "Amount", stringFormat: "{0:C2}");
-			this.Content = layout;
 		}
 	}
 

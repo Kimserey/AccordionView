@@ -31,7 +31,7 @@ namespace Accordion
 		{
 			this.Title = "Accordion";
 
-			var template = new DataTemplate(typeof(DefaultAccordionTemplate));
+			var template = new DataTemplate(typeof(DefaultTemplate));
 
 			var view = new AccordionView(template);
 			view.SetBinding(AccordionView.ItemsSourceProperty, "List");
