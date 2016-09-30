@@ -58,10 +58,10 @@ namespace Accordion
 	public class AccordionSectionView : ContentView
 	{
 		private bool _isExpended = false;
+		private StackLayout _content = new StackLayout { HeightRequest = 0 };
 		private Color _headerColor = Color.FromHex("0067B7");
 		private ImageSource _arrowRight = ImageSource.FromFile("ic_keyboard_arrow_right_white_24dp.png");
 		private ImageSource _arrowDown = ImageSource.FromFile("ic_keyboard_arrow_down_white_24dp.png");
-		private StackLayout _list = new StackLayout { HeightRequest = 0 };
 		private AbsoluteLayout _header = new AbsoluteLayout();
 		private Image _headerIcon = new Image { VerticalOptions = LayoutOptions.Center };
 		private Label _headerTitle = new Label { TextColor = Color.White, VerticalTextAlignment = TextAlignment.Center, HeightRequest = 50 };
@@ -110,7 +110,7 @@ namespace Accordion
 					Spacing = 0,
 					Children = {
 						_header,
-						_list
+						_content
 					}
 				};
 
@@ -122,15 +122,22 @@ namespace Accordion
 						if (_isExpended)
 						{
 							_headerIcon.Source = _arrowRight;
-							_list.HeightRequest = 0;
+							_content.HeightRequest = 0;
+							_content.IsVisible = false;
 							_isExpended = false;
 						}
 						else
 						{
 							_headerIcon.Source = _arrowDown;
-							_list.HeightRequest = _list.Children.Count * 30;
+							_content.HeightRequest = _content.Children.Count * 50;
+							_content.IsVisible = true;
 							_isExpended = true;
-							await parent.ScrollToAsync(0, layout.Y, true);
+
+							// Scroll top by the current Y position of the section
+							if (parent.Parent is VisualElement)
+							{
+								await parent.ScrollToAsync(0, this.Y, true);
+							}
 						}
 					})
 				}
@@ -146,13 +153,13 @@ namespace Accordion
 
 		void PopulateList()
 		{
-			_list.Children.Clear();
+			_content.Children.Clear();
 
 			foreach (object item in this.ItemsSource)
 			{
 				var template = (View)_template.CreateContent();
 				template.BindingContext = item;
-				_list.Children.Add(template);
+				_content.Children.Add(template);
 			}
 		}
 

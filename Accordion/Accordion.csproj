@@ -30,7 +30,6 @@
   <ItemGroup>
     <Compile Include="Accordion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CustomViewTestPage.cs" />
     <Compile Include="AccordionView.cs" />
   </ItemGroup>
   <ItemGroup>

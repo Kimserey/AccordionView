@@ -36,8 +36,8 @@ namespace Accordion
 				var layout = new AbsoluteLayout { Padding = 5, HeightRequest = 50 };
 				var title = new Label { HorizontalTextAlignment = TextAlignment.Start };
 				var price = new Label { HorizontalTextAlignment = TextAlignment.End };
-				layout.Children.Add(title, new Rectangle(0, 1, 0.5, 1), AbsoluteLayoutFlags.All);
-				layout.Children.Add(price, new Rectangle(0, 1, 0.5, 1), AbsoluteLayoutFlags.All);
+				layout.Children.Add(title, new Rectangle(0, 0.5, 0.5, 1), AbsoluteLayoutFlags.All);
+				layout.Children.Add(price, new Rectangle(0, 0.5, 0.5, 1), AbsoluteLayoutFlags.All);
 				title.SetBinding(Label.TextProperty, "Date", stringFormat: "{0:dd MMM yyyy}");
 				price.SetBinding(Label.TextProperty, "Amount", stringFormat: "{0:C2}");
 				return (object)layout;
@@ -54,8 +54,43 @@ namespace Accordion
 					List = new List<Section> {
 						new Section
 						{
+							Title = "December",
+							List = new List<ShoppingCart> {
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 }
+							}
+						},
+						new Section
+						{
+							Title = "November",
+							List = new List<ShoppingCart> {
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 }
+							}
+						},
+						new Section
+						{
 							Title = "October",
 							List = new List<ShoppingCart> {
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
 								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 }
 							}
 						},
@@ -63,6 +98,14 @@ namespace Accordion
 						{
 							Title = "September",
 							List = new List<ShoppingCart> {
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
 								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 }
 							}
 						},
@@ -72,7 +115,22 @@ namespace Accordion
 							List = new List<ShoppingCart> {
 								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 }
 							}
-						}
+						},
+						new Section
+						{
+							Title = "July",
+							List = new List<ShoppingCart> {
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 },
+								new ShoppingCart { Date = DateTime.UtcNow, Amount = 10.05 }
+							}
+						},
 					}
 				};
 			this.Content = view;
