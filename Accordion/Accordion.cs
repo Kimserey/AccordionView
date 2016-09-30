@@ -25,28 +25,13 @@ namespace Accordion
 		public IEnumerable<Section> List { get; set; }
 	}
 
-	public class TemplateView : ContentView
-	{
-		public TemplateView() 
-		{ 
-			var layout = new AbsoluteLayout { Padding = 5, HeightRequest = 50 };
-			var title = new Label { HorizontalTextAlignment = TextAlignment.Start, HorizontalOptions = LayoutOptions.StartAndExpand };
-			var price = new Label { HorizontalTextAlignment = TextAlignment.End, HorizontalOptions = LayoutOptions.End };
-			layout.Children.Add(title, new Rectangle(0, 0.5, 0.5, 1), AbsoluteLayoutFlags.All);
-			layout.Children.Add(price, new Rectangle(1, 0.5, 0.5, 1), AbsoluteLayoutFlags.All);
-			title.SetBinding(Label.TextProperty, "Date", stringFormat: "{0:dd MMM yyyy}");
-			price.SetBinding(Label.TextProperty, "Amount", stringFormat: "{0:C2}");
-			this.Content = layout;
-		}
-	}
-
 	public class AccordionViewPage : ContentPage
 	{
 		public AccordionViewPage()
 		{
 			this.Title = "Accordion";
 
-			var template = new DataTemplate(typeof(TemplateView));
+			var template = new DataTemplate(typeof(DefaultAccordionTemplate));
 
 			var view = new AccordionView(template);
 			view.SetBinding(AccordionView.ItemsSourceProperty, "List");
